@@ -1,14 +1,16 @@
-
+import math
 def main():
     count = int(input("How many players? "))
     gameboard = []
     placed = 0
 
+    switched = False
     for _ in range(count+1):
-        if placed < (count/2):
+        if placed < (count/2) and switched is False:
             gameboard.append(">")
-        elif placed == int(count/2):
+        elif placed >= (count/2) and switched is False:
             gameboard.append(" ")
+            switched = True
         else:
             gameboard.append("<")
         placed += 1
