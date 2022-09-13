@@ -1,14 +1,16 @@
 import math
+
+
 def main():
     count = int(input("How many players? "))
     gameboard = []
     placed = 0
 
     switched = False
-    for _ in range(count+1):
-        if placed < (count/2) and switched is False:
+    for _ in range(count + 1):
+        if placed < (count / 2) and switched is False:
             gameboard.append(">")
-        elif placed >= (count/2) and switched is False:
+        elif placed >= (count / 2) and switched is False:
             gameboard.append(" ")
             switched = True
         else:
@@ -28,12 +30,12 @@ def main():
                 if dir == "l":
                     # Step
                     gameboard[prevspace] = ">"
-                    gameboard[prevspace-1] = " "
+                    gameboard[prevspace - 1] = " "
                     dir = "r"
                 else:
                     # Step
                     gameboard[prevspace] = "<"
-                    gameboard[prevspace+1] = " "
+                    gameboard[prevspace + 1] = " "
                     dir = "l"
             else:
                 # Jump
@@ -74,7 +76,10 @@ def is_done(gameboard):
 
 def is_conflict(gameboard):
     spaceIndex = find_space(gameboard)
-    if (gameboard[spaceIndex-1] == ">" and gameboard[spaceIndex+1] == "<") and (spaceIndex != 0 and spaceIndex != len(gameboard)-1):
+    if (spaceIndex == len(gameboard) - 1 or spaceIndex == 0):
+        return False  # Can't conflict at the edges
+    if (gameboard[spaceIndex - 1] == ">" and gameboard[spaceIndex + 1]
+            == "<") and (spaceIndex != 0 and spaceIndex != len(gameboard) - 1):
         return True
     return False
 
@@ -83,21 +88,23 @@ def findPieceThatCanJump(gameboard):
     spaceIndex = find_space(gameboard)
     # Find the index of the piece that can jump
     for pi, piece in enumerate(gameboard):
-        if piece == ">" and pi == spaceIndex - 2 and gameboard[spaceIndex-1] != ">":
+        if piece == ">" and pi == spaceIndex - 2 and gameboard[spaceIndex -
+                                                               1] != ">":
             return pi
-        elif piece == "<" and pi == spaceIndex + 2 and gameboard[spaceIndex+1] != "<":
+        elif piece == "<" and pi == spaceIndex + 2 and gameboard[spaceIndex +
+                                                                 1] != "<":
             return pi
     raise Exception("No piece can jump, something went wrong with the logic")
 
 
 def stepFirstPiece(gameboard):
     spaceIndex = find_space(gameboard)
-    if gameboard[spaceIndex-1] == ">" and spaceIndex != 0:
+    if gameboard[spaceIndex - 1] == ">" and spaceIndex != 0:
         gameboard[spaceIndex] = ">"
-        gameboard[spaceIndex-1] = " "
-    elif gameboard[spaceIndex+1] == "<" and spaceIndex != len(gameboard)-1:
+        gameboard[spaceIndex - 1] = " "
+    elif gameboard[spaceIndex + 1] == "<" and spaceIndex != len(gameboard) - 1:
         gameboard[spaceIndex] = "<"
-        gameboard[spaceIndex+1] = " "
+        gameboard[spaceIndex + 1] = " "
     return gameboard
 
 
